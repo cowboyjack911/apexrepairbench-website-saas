@@ -28,7 +28,7 @@ Key files and folders:
 npm install
 ```
 
-2. Configure environment variables
+1. Configure environment variables
 
 Create a `.env.local` file (or copy from [.env.example](.env.example)) and set your Gemini key.
 
@@ -37,19 +37,19 @@ GEMINI_API_KEY=your_key_here
 VITE_GEMINI_API_KEY=your_key_here
 ```
 
-3. Run the dev server
+1. Run the dev server
 
 ```powershell
 npm run dev
 ```
 
-4. Build for production
+1. Build for production
 
 ```powershell
 npm run build
 ```
 
-5. Preview local production build
+1. Preview local production build
 
 ```powershell
 npm run preview
