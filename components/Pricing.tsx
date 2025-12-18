@@ -3,6 +3,21 @@ import { Check, Gift, Sparkles, ShieldCheck } from 'lucide-react';
 import { PRICING_TIERS } from '../constants';
 
 export const PricingSection: React.FC = () => {
+  const paymentMode = import.meta.env.VITE_PAYMENT_MODE || 'links';
+
+  const handleSubscribe = async (plan: string) => {
+    try {
+      const res = await fetch(`/api/create-payment-link?plan=${encodeURIComponent(plan)}`);
+      const data = await res.json();
+      if (data?.url) {
+        window.open(data.url, '_blank');
+      } else {
+        alert('Unable to create payment link. Please try again.');
+      }
+    } catch (e) {
+      alert('Network error. Please try again.');
+    }
+  };
   return (
     <section id="pricing" className="py-24 bg-slate-50 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -95,7 +110,18 @@ export const PricingSection: React.FC = () => {
                   const proUrl = import.meta.env.VITE_PROFESSIONAL_LINK || '#';
                   const enterpriseUrl = import.meta.env.VITE_ENTERPRISE_CONTACT_LINK || '#';
                   const href = tier.name === 'Starter' ? starterUrl : tier.name === 'Professional' ? proUrl : enterpriseUrl;
-                  return (
+                  return paymentMode === 'api' ? (
+                    <button
+                      onClick={() => handleSubscribe(tier.name)}
+                      className={`w-full rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 shadow-sm ${
+                        tier.highlight
+                          ? 'bg-brand-600 text-white hover:bg-brand-500 focus-visible:outline-brand-600'
+                          : 'bg-brand-50 text-brand-600 hover:bg-brand-100'
+                      }`}
+                    >
+                      {tier.cta}
+                    </button>
+                  ) : (
                     <a
                       href={href}
                       target={href !== '#' ? '_blank' : undefined}

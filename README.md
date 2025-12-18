@@ -33,6 +33,7 @@ Create a `.env.local` file (or copy from [apexrepairbench (2)/.env.example](apex
 
 ```env
 GEMINI_API_KEY=your_key_here
+VITE_GEMINI_API_KEY=your_key_here
 ```
 
 3. Run the dev server
@@ -60,6 +61,16 @@ You can deploy the `dist/` output to any static host. Popular options:
 - GitHub Pages: enabled via workflow at [.github/workflows/pages.yml](.github/workflows/pages.yml). The build sets the base to `/apexrepairbench-website-saas/` for correct asset paths.
 - Vercel: uses [vercel.json](vercel.json) with `npm run build` and `dist/` output. Import this repo in Vercel and deploy.
 - Netlify: drag‑and‑drop or CI deploy
+
+## Subscriptions / Buy Now
+
+Two options:
+- Payment links (simple): set `VITE_STARTER_LINK`, `VITE_PROFESSIONAL_LINK`, `VITE_ENTERPRISE_CONTACT_LINK` in `.env.local`. Buttons open these URLs.
+- API mode (server-generated Square links): set `VITE_PAYMENT_MODE=api` and add server secrets in Vercel/GitHub:
+	- `SQUARE_ACCESS_TOKEN`
+	- `SQUARE_LOCATION_ID`
+	- Optional amounts: `STARTER_AMOUNT_CENTS=2900`, `PRO_AMOUNT_CENTS=5900`
+API endpoint: `/api/create-payment-link?plan=Starter|Professional`. The Pricing buttons call this in API mode.
 
 ## Scripts
 
