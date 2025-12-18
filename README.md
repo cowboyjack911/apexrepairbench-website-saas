@@ -71,6 +71,29 @@ Two options:
 	- `SQUARE_LOCATION_ID`
 	- Optional amounts: `STARTER_AMOUNT_CENTS=2900`, `PRO_AMOUNT_CENTS=5900`
 API endpoint: `/api/create-payment-link?plan=Starter|Professional`. The Pricing buttons call this in API mode.
+### Deploying to Vercel (API mode)
+
+1. Import this repository into Vercel (https://vercel.com/new).
+2. In the Project Settings → Environment Variables, add the following (Production):
+	- `VITE_PAYMENT_MODE` = `api`
+	- `SQUARE_ACCESS_TOKEN` = <your square access token> (server-only)
+	- `SQUARE_LOCATION_ID` = <your square location id> (server-only)
+	- `STARTER_AMOUNT_CENTS` = `2900` (optional)
+	- `PRO_AMOUNT_CENTS` = `5900` (optional)
+
+3. Deploy the project. After deployment, the Pricing buttons in API mode will call `/api/create-payment-link` and return a generated Square Payment Link.
+
+4. To test after deploy, open your site and click a plan button — a new tab should open with the Square checkout.
+
+Local testing:
+- Run `npm run dev` for the frontend, but serverless functions require `vercel dev` for accurate local testing. Install Vercel CLI and run:
+
+```powershell
+npm i -g vercel
+vercel dev
+```
+
+This serves `/api/*` routes locally.
 
 ## Scripts
 
