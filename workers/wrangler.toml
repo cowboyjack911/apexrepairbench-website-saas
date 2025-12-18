@@ -1,10 +1,4 @@
 name = "apexrepairbench-create-payment-link"
-type = "javascript"
+main = "src/create-payment-link.ts"
 compatibility_date = "2025-12-18"
-
-# Replace the placeholders with your Cloudflare account/project details before publishing
-account_id = "YOUR_ACCOUNT_ID"
 workers_dev = true
-
-[build]
-command = "npm install"
