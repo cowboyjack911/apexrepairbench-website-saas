@@ -57,9 +57,9 @@ npm run preview
 
 You can deploy the `dist/` output to any static host. Popular options:
 
-- Vercel: zero‑config for Vite projects
+- GitHub Pages: enabled via workflow at [.github/workflows/pages.yml](.github/workflows/pages.yml). The build sets the base to `/apexrepairbench-website-saas/` for correct asset paths.
+- Vercel: uses [vercel.json](vercel.json) with `npm run build` and `dist/` output. Import this repo in Vercel and deploy.
 - Netlify: drag‑and‑drop or CI deploy
-- GitHub Pages: serve `dist/` via Pages
 
 ## Scripts
 
