@@ -90,16 +90,26 @@ export const PricingSection: React.FC = () => {
               </ul>
               
               <div className="mt-8">
-                <a
-                  href="#"
-                  className={`block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 shadow-sm ${
-                    tier.highlight
-                      ? 'bg-brand-600 text-white hover:bg-brand-500 focus-visible:outline-brand-600'
-                      : 'bg-brand-50 text-brand-600 hover:bg-brand-100'
-                  }`}
-                >
-                  {tier.cta}
-                </a>
+                {(() => {
+                  const starterUrl = import.meta.env.VITE_STARTER_LINK || '#';
+                  const proUrl = import.meta.env.VITE_PROFESSIONAL_LINK || '#';
+                  const enterpriseUrl = import.meta.env.VITE_ENTERPRISE_CONTACT_LINK || '#';
+                  const href = tier.name === 'Starter' ? starterUrl : tier.name === 'Professional' ? proUrl : enterpriseUrl;
+                  return (
+                    <a
+                      href={href}
+                      target={href !== '#' ? '_blank' : undefined}
+                      rel={href !== '#' ? 'noopener noreferrer' : undefined}
+                      className={`block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 shadow-sm ${
+                        tier.highlight
+                          ? 'bg-brand-600 text-white hover:bg-brand-500 focus-visible:outline-brand-600'
+                          : 'bg-brand-50 text-brand-600 hover:bg-brand-100'
+                      }`}
+                    >
+                      {tier.cta}
+                    </a>
+                  );
+                })()}
                 <p className="mt-3 text-xs text-center text-slate-400 font-medium">
                   7-day free trial • No card required
                 </p>

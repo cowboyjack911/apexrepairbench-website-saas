@@ -1,6 +1,7 @@
 import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// In Vite, client-side env vars must be prefixed with VITE_
+const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
 
 const SYSTEM_INSTRUCTION = `
 You are 'Mendrix', the intelligent AI assistant for ApexRepairBench.
