@@ -1,4 +1,20 @@
-name = "apexrepairbench-create-payment-link"
-main = "src/create-payment-link.ts"
-compatibility_date = "2025-12-18"
+name = "apexrepairbench-api"
+main = "index.ts"
+compatibility_date = "2024-12-18"
 workers_dev = true
+
+# D1 Database binding for data storage
+[[d1_databases]]
+binding = "DB"
+database_name = "apexrepairbench-db"
+# IMPORTANT: Update this with your actual database ID after running: wrangler d1 create apexrepairbench-db
+database_id = "placeholder-update-after-creating-d1"
+
+# R2 Bucket binding for installer files
+[[r2_buckets]]
+binding = "INSTALLERS"
+bucket_name = "apexrepairbench-installers"
+
+# Production environment configuration
+[env.production]
+vars = { ENVIRONMENT = "production" }

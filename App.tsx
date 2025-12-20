@@ -8,6 +8,7 @@ import { ChatWidget } from './components/ChatWidget';
 import { FAQSection } from './components/FAQ';
 import { PricingSection } from './components/Pricing';
 import { SaleBanner } from './components/SaleBanner';
+import { DownloadSection } from './components/DownloadSection';
 
 // Custom Logo Component matching the brand identity
 const BrandLogo: React.FC<{ className?: string, textClass?: string }> = ({ className = "h-8", textClass = "text-white" }) => (
@@ -287,6 +288,8 @@ const App: React.FC = () => {
       </section>
 
       <PricingSection />
+
+      <DownloadSection />
 
       <FAQSection />
 
