@@ -1,3 +1,12 @@
+# ⚠️ ARCHIVED - This repository has been moved
+
+This repository has been **archived and merged** into the main ApexRepairBench monorepo.
+
+**👉 New location:** https://github.com/cowboyjack911/ApexRepairBench/tree/main/marketing-website
+
+Please use the main repository for all future development.
+
+---
 # ApexRepairBench — SaaS Website
 
 Modern marketing site built with Vite, React, and TypeScript.
@@ -102,3 +111,4 @@ vercel dev
 ## License
 
 Proprietary. Do not redistribute without permission.
+
