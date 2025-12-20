@@ -60,16 +60,20 @@ async function handleCreatePaymentLink(request: Request, env: Env): Promise<Resp
       return jsonResponse({ error: 'Server not configured' }, 500);
     }
 
-    // Determine amount based on plan
+    // Determine amount based on plan using exact matching
     let amountCents: number;
-    const planLower = plan.toLowerCase();
-    if (planLower.includes('pro') || planLower.includes('professional')) {
-      amountCents = env.PRO_AMOUNT_CENTS ? Number(env.PRO_AMOUNT_CENTS) : 5900;
-    } else if (planLower.includes('enterprise')) {
-      amountCents = env.ENTERPRISE_AMOUNT_CENTS ? Number(env.ENTERPRISE_AMOUNT_CENTS) : 14900;
-    } else {
-      amountCents = env.STARTER_AMOUNT_CENTS ? Number(env.STARTER_AMOUNT_CENTS) : 2900;
-    }
+    const planLower = plan.toLowerCase().trim();
+    
+    // Plan mapping with exact matching
+    const planPricing: Record<string, number> = {
+      'professional': env.PRO_AMOUNT_CENTS ? Number(env.PRO_AMOUNT_CENTS) : 5900,
+      'pro': env.PRO_AMOUNT_CENTS ? Number(env.PRO_AMOUNT_CENTS) : 5900,
+      'enterprise': env.ENTERPRISE_AMOUNT_CENTS ? Number(env.ENTERPRISE_AMOUNT_CENTS) : 14900,
+      'starter': env.STARTER_AMOUNT_CENTS ? Number(env.STARTER_AMOUNT_CENTS) : 2900,
+    };
+    
+    // Default to starter if plan not recognized
+    amountCents = planPricing[planLower] || planPricing['starter'];
 
     const idempotencyKey = crypto.randomUUID();
 
@@ -165,10 +169,15 @@ async function handleDownload(request: Request, env: Env): Promise<Response> {
  */
 async function handleVerifyLicense(request: Request, env: Env): Promise<Response> {
   try {
-    const body = await request.json() as any;
+    const contentType = request.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      return jsonResponse({ valid: false, error: 'Content-Type must be application/json' }, 400);
+    }
+
+    const body = await request.json();
     const { license_key, device_id } = body;
 
-    if (!license_key) {
+    if (!license_key || typeof license_key !== 'string') {
       return jsonResponse({ valid: false, error: 'License key required' }, 400);
     }
 
@@ -217,11 +226,34 @@ async function handleVerifyLicense(request: Request, env: Env): Promise<Response
  */
 async function handleSyncPush(request: Request, env: Env): Promise<Response> {
   try {
-    const body = await request.json() as SyncPushRequest;
+    const contentType = request.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      return jsonResponse({ success: false, error: 'Content-Type must be application/json' }, 400);
+    }
+
+    const body = await request.json();
+    
+    // Runtime validation
+    if (!body || typeof body !== 'object') {
+      return jsonResponse({ success: false, error: 'Invalid request body' }, 400);
+    }
+
     const { license_key, device_id, shop_id, data } = body;
 
-    if (!license_key || !device_id || !shop_id || !data) {
-      return jsonResponse({ success: false, error: 'Missing required fields' }, 400);
+    if (!license_key || typeof license_key !== 'string') {
+      return jsonResponse({ success: false, error: 'License key is required' }, 400);
+    }
+
+    if (!device_id || typeof device_id !== 'string') {
+      return jsonResponse({ success: false, error: 'Device ID is required' }, 400);
+    }
+
+    if (!shop_id || typeof shop_id !== 'string') {
+      return jsonResponse({ success: false, error: 'Shop ID is required' }, 400);
+    }
+
+    if (!Array.isArray(data)) {
+      return jsonResponse({ success: false, error: 'Data must be an array' }, 400);
     }
 
     // Verify license

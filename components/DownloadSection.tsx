@@ -7,6 +7,8 @@ import { Download, Monitor, Apple, Box, CheckCircle2, Shield } from 'lucide-reac
  */
 export const DownloadSection: React.FC = () => {
   const APP_VERSION = '1.0.0';
+  // Use environment variable for API endpoint, fallback to relative path for production
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
   /**
    * Handle download button click
@@ -14,7 +16,7 @@ export const DownloadSection: React.FC = () => {
   const handleDownload = async (platform: 'windows' | 'mac' | 'linux') => {
     try {
       // In production, this would point to your Cloudflare Worker
-      const downloadUrl = `/api/download?platform=${platform}`;
+      const downloadUrl = `${API_BASE_URL}/api/download?platform=${platform}`;
       
       // Create a temporary link and trigger download
       const link = document.createElement('a');

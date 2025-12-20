@@ -18,9 +18,12 @@ function createWindow() {
     minWidth: 800,
     minHeight: 600,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-      enableRemoteModule: true,
+      // Security: Enable context isolation and disable Node integration in renderer
+      nodeIntegration: false,
+      contextIsolation: true,
+      enableRemoteModule: false,
+      // Use preload script for secure IPC communication if needed
+      // preload: path.join(__dirname, 'preload.js'),
     },
     icon: path.join(__dirname, '../dist/icon.png'),
     title: 'ApexRepairBench',
